@@ -254,7 +254,7 @@ def wecom_app(title, content):
         touser = QYWX_AM_AY[2]
         agentid = QYWX_AM_AY[3]
         try:
-            media_id = QYWX_AM_AY[4]
+            media_id = ''
         except:
             media_id = ''
         wx = WeCom(corpid, corpsecret, agentid)
