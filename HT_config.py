@@ -1,9 +1,5 @@
 # !/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @Time    : 2021/9/12
-# @Author  : MashiroF
-# @File    : HT_config.py
-# @Software: PyCharm
 
 #################################### 以下配置可更改 #########################################
 ## 云函数/青龙面板 环境变量优先级  >  配置文件 `HT_config` 变量优先级
@@ -70,8 +66,8 @@ def checkFile(urlList):
 
 # 检测必备文件
 fileUrlList = [
-    'https://raw.githubusercontent.com/Mashiro2000/HeyTapTask/main/sendNotify.py',
-    'https://raw.githubusercontent.com/Mashiro2000/HeyTapTask/main/HT_account.py'
+    'https://raw.githubusercontent.com/feverrun/heytap/main/sendNotify.py',
+    'https://raw.githubusercontent.com/feverrun/heytap/main/HT_account.py'
 ]
 checkFile(fileUrlList)
 

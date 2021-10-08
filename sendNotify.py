@@ -1,10 +1,5 @@
 # !/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @Time    : 2021/9/16
-# @Author  : curtinlv
-# @modify  : MashiroF
-# @File    : sendNotify.py
-# @Software: PyCharm
 
 import sys
 import os, re

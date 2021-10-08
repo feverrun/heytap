@@ -1,9 +1,5 @@
 # !/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @Time    : 2021/9/12
-# @Author  : MashiroF
-# @File    : TaskCenter.py
-# @Software: PyCharm
 
 '''
 cron:  25 5,12 * * * TaskCenter.py
@@ -21,7 +17,7 @@ try:
     from HT_config import downFlag,notifyBlackList,logger
     import requests
 except Exception as error:
-    logger.info('近期代码发生重构,请前往 https://github.com/Mashiro2000/HeyTapTask 查看更新')
+    logger.info('近期代码发生重构,请前往 https://github.com/feverrun/heytap 查看更新')
     logger.info(f'失败原因:{error}')
     sys.exit(0)
 
