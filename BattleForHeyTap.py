@@ -1,5 +1,9 @@
 # !/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# @Time    : 2021/9/26
+# @Author  : MashiroF
+# @File    : BattleForHeyTap.py
+# @Software: PyCharm
 
 '''
 cron:  45 5,12 * * * BattleForHeyTap.py
@@ -11,13 +15,12 @@ import re
 import sys
 import time
 import random
+import requests
 
 # 配置文件
 try:
     from HT_config import downFlag,notifyBlackList,logger
-    import requests
 except Exception as error:
-    logger.info('近期代码发生重构,请前往 https://github.com/feverrun/heytap 查看更新')
     logger.info(f'失败原因:{error}')
     sys.exit(0)
 
@@ -146,7 +149,7 @@ class BattleForHeyTap:
             self.receiveAward(dic)
         else:
             notify(f"[{dic['title']}]\t{response['msg']}")
-            time.sleep(random.randint(3,5))
+        time.sleep(random.randint(3,5))
 
     def getBattleList(self):
         aid = 1598  # 抓包结果为固定值:1598
@@ -214,7 +217,7 @@ class BattleForHeyTap:
                     self.receiveAward(each)
                 elif each['t_status'] == 2:
                     notify(f"[{each['title']}]\t任务完成")
-            elif each['title'] == '预约真我GT Neo2' or each['title'] == '浏览真我GT Neo2':
+            elif each['title'] == '预约真我GT Neo2T' or each['title'] == '浏览真我GT Neo2T':
                 if each['t_status'] == 0:
                     self.runViewTask(dic=each)
                 elif each['t_status'] == 1:

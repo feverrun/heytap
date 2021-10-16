@@ -1,5 +1,9 @@
 # !/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# @Time    : 2021/9/12
+# @Author  : MashiroF
+# @File    : DailyCash.py
+# @Software: PyCharm
 
 '''
 cron:  30 5,12 * * * DailyCash.py
@@ -17,7 +21,6 @@ try:
     from HT_config import downFlag,notifyBlackList,logger
     import requests
 except Exception as error:
-    logger.info('近期代码发生重构,请前往 https://github.com/feverrun/heytap 查看更新')
     logger.info(f'失败原因:{error}')
     sys.exit(0)
 

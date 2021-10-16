@@ -1,5 +1,9 @@
 # !/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# @Time    : 2021/9/16
+# @Author  : MashiroF
+# @File    : BattleForRealMe.py
+# @Software: PyCharm
 
 '''
 cron:  40 5,12 * * * BattleForRealMe.py
@@ -11,13 +15,12 @@ import re
 import sys
 import time
 import random
+import requests
 
 # 配置文件
 try:
     from HT_config import downFlag,notifyBlackList,logger
-    import requests
 except Exception as error:
-    logger.info('近期代码发生重构,请前往 https://github.com/feverrun/heytap 查看更新')
     logger.info(f'失败原因:{error}')
     sys.exit(0)
 
@@ -146,7 +149,7 @@ class BattleForRealMe:
             self.receiveAward(dic)
         else:
             notify(f"[{dic['title']}]\t{response['msg']}")
-            time.sleep(random.randint(3,5))
+        time.sleep(random.randint(3,5))
 
     def getBattleList(self):
         aid = 1582  # 抓包结果为固定值:1582
