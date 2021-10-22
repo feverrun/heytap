@@ -1,7 +1,6 @@
 # !/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # @Time    : 2021/9/12
-# @Author  : MashiroF
 # @File    : DailyCash.py
 # @Software: PyCharm
 
@@ -41,7 +40,8 @@ except Exception as error:
 try:
     from HT_account import accounts
     lists = accounts
-except:
+except Exception as error:
+    logger.info(f'失败原因:{error}')
     lists = []
 
 # 配信内容格式
