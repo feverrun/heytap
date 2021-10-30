@@ -1,5 +1,9 @@
 # !/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# @Time    : 2021/9/16
+# @Author  : curtinlv
+# @File    : sendNotify.py
+# @Software: PyCharm
 
 import sys
 import os, re
@@ -254,7 +258,7 @@ def wecom_app(title, content):
         touser = QYWX_AM_AY[2]
         agentid = QYWX_AM_AY[3]
         try:
-            media_id = ''
+            media_id = QYWX_AM_AY[4]
         except:
             media_id = ''
         wx = WeCom(corpid, corpsecret, agentid)
