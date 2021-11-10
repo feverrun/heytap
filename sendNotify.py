@@ -383,7 +383,7 @@ def wecom_app(title: str, content: str) -> None:
     touser = QYWX_AM_AY[2]
     agentid = QYWX_AM_AY[3]
     try:
-        media_id = QYWX_AM_AY[4]
+        media_id = ''
     except IndexError:
         media_id = ""
     wx = WeCom(corpid, corpsecret, agentid)
