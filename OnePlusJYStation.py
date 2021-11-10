@@ -1,13 +1,13 @@
 # !/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @Time    : 2021/10/20
+# @Time    : 2021/9/26
 # @Author  : MashiroF
-# @File    : Double11.py
+# @File    : OnePlusJYStation.py
 # @Software: PyCharm
 
 '''
-cron:  44 7,11 * * * Double11.py
-new Env('全名抽免单');
+cron:  16 5,12 * * * OnePlusJYStation.py
+new Env('一加加油站');
 '''
 
 import os
@@ -41,8 +41,7 @@ except Exception as error:
 try:
     from HT_account import accounts
     lists = accounts
-except Exception as error:
-    logger.info(f'失败原因:{error}')
+except:
     lists = []
 
 # 配信内容格式
@@ -53,9 +52,9 @@ def notify(content=None):
     logger.info(content)
 
 # 日志录入时间
-notify(f"任务:全名抽免单\n时间:{time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())}")
+notify(f"任务:一加加油站\n时间:{time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())}")
 
-class Double11:
+class OnePlusJYStation:
     def __init__(self,dic):
         self.dic = dic
         self.sess = requests.session()
@@ -79,6 +78,51 @@ class Double11:
             notify(f"{self.dic['user']}\t登录失败")
             return False
 
+    def receiveAward(self,dic):
+        aid = 1473
+        url = 'https://hd.oppo.com/task/award'
+        headers = {
+            'Host': 'hd.oppo.com',
+            'Connection': 'keep-alive',
+            'Accept': '*/*',
+            'Origin': 'https://hd.oppo.com',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'Referer': 'https://hd.oppo.com/act/m/2021/jifenzhuanpan/index.html?us=gerenzhongxin&um=hudongleyuan&uc=yingjifen',
+            'Accept-Encoding': 'gzip, deflate',
+            'Accept-Language': 'zh-CN,en-US;q=0.9'
+        }
+        data = {
+            'aid': aid,
+            't_index': dic['t_index']
+        }
+        response = self.sess.post(url=url,headers=headers,data=data).json()
+        if response['no'] == '200':
+            notify(f"[{dic['title']}]\t{response['msg']}")
+        else:
+            notify(f"[{dic['title']}]\t{response['msg']}")
+        time.sleep(random.randint(3,5))
+
+    def shareGoods(self,count=2,flag=None,dic=None):
+        url = 'https://msec.opposhop.cn/users/vi/creditsTask/pushTask'
+        headers = {
+            'clientPackage': 'com.oppo.store',
+            'Host': 'msec.opposhop.cn',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Connection': 'keep-alive',
+            'User-Agent': 'okhttp/3.12.12.200sp1',
+            'Accept-Encoding': 'gzip',
+        }
+        params = {
+            'marking': 'daily_sharegoods'
+        }
+        for i in range(count + random.randint(1,3)):
+            self.sess.get(url=url,headers=headers,params=params)
+            notify(f"正在执行第{i+1}次微信分享...")
+            time.sleep(random.randint(7,10))
+        if flag == 1: #来源积分大乱斗
+            self.receiveAward(dic=dic)
     # 秒杀详情页获取商品数据
     def getGoodMess(self,count=10):
         taskUrl = f'https://msec.opposhop.cn/goods/v1/SeckillRound/goods/{random.randint(100,250)}'    # 随机商品
@@ -118,54 +162,9 @@ class Double11:
             if dic:
                 self.receiveAward(dic)
 
-    def receiveAward(self,dic):
-        aid = 1768
-        url = 'https://hd.oppo.com/task/award'
-        headers = {
-            'Host': 'hd.oppo.com',
-            'Connection': 'keep-alive',
-            'Accept': '*/*',
-            'Origin': 'https://hd.oppo.com',
-            'X-Requested-With': 'XMLHttpRequest',
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            'Referer': 'https://hd.oppo.com/act/m/2021/jifenzhuanpan/index.html?us=gerenzhongxin&um=hudongleyuan&uc=yingjifen',
-            'Accept-Encoding': 'gzip, deflate',
-            'Accept-Language': 'zh-CN,en-US;q=0.9'
-        }
-        data = {
-            'aid': aid,
-            't_index': dic['t_index']
-        }
-        response = self.sess.post(url=url,headers=headers,data=data).json()
-        if response['no'] == '200':
-            notify(f"[{dic['title']}]\t{response['msg']}")
-        else:
-            notify(f"[{dic['title']}]\t{response['msg']}")
-        time.sleep(random.randint(1,3))
-
-    # def shareGoods(self,count=2,flag=None,dic=None):
-    #     url = 'https://msec.opposhop.cn/users/vi/creditsTask/pushTask'
-    #     headers = {
-    #         'clientPackage': 'com.oppo.store',
-    #         'Host': 'msec.opposhop.cn',
-    #         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-    #         'Content-Type': 'application/x-www-form-urlencoded',
-    #         'Connection': 'keep-alive',
-    #         'User-Agent': 'okhttp/3.12.12.200sp1',
-    #         'Accept-Encoding': 'gzip',
-    #     }
-    #     params = {
-    #         'marking': 'daily_sharegoods'
-    #     }
-    #     for i in range(count + random.randint(1,3)):
-    #         self.sess.get(url=url,headers=headers,params=params)
-    #         notify(f"正在执行第{i+1}次微信分享...")
-    #         time.sleep(random.randint(7,10))
-    #     if flag == 1:
-    #         self.receiveAward(dic=dic)
-
+    # 直播,宠粉，浏览商品
     def runViewTask(self,dic=None):
-        aid = 1768
+        aid = 1473
         url = 'https://hd.oppo.com/task/finish'
         headers = {
             'Host': 'hd.oppo.com',
@@ -191,7 +190,7 @@ class Double11:
         time.sleep(random.randint(3,5))
 
     def getBattleList(self):
-        aid = 1768  # 抓包结果为固定值:1582
+        aid = 1473  # 抓包结果为固定值:1473
         url = 'https://hd.oppo.com/task/list'
         headers = {
             'Host':'hd.oppo.com',
@@ -204,13 +203,13 @@ class Double11:
             'aid':aid
         }
         response = self.sess.get(url=url,headers=headers,params=params).json()
-        time.sleep(random.randint(3,5))
         if response['no'] == '200':
             self.taskData = response['data']
             return True
         else:
             notify(f"{response['msg']}")
             return False
+        time.sleep(random.randint(1,3))
 
     def runBattleTask(self):
         for each in self.taskData:
@@ -221,65 +220,16 @@ class Double11:
                     self.receiveAward(each)
                 elif each['t_status'] == 2:
                     notify(f"[{each['title']}]\t领取成功")
-            elif each['title'] == '浏览11.11主会场':
+            elif each['title'] == '浏览一加11.11会场':
                 if each['t_status'] == 0:
                     self.runViewTask(dic=each)
                 elif each['t_status'] == 1:
                     self.receiveAward(each)
                 elif each['t_status'] == 2:
                     notify(f"[{each['title']}]\t任务完成")
-            elif each['title'] == '浏览天天抢5折会场':
+            elif each['title'] == '浏览一加商品':
                 if each['t_status'] == 0:
-                    self.runViewTask(dic=each)
-                elif each['t_status'] == 1:
-                    self.receiveAward(each)
-                elif each['t_status'] == 2:
-                    notify(f"[{each['title']}]\t任务完成")
-            elif each['title'] == '浏览会员中心':
-                if each['t_status'] == 0:
-                    self.runViewTask(dic=each)
-                elif each['t_status'] == 1:
-                    self.receiveAward(each)
-                elif each['t_status'] == 2:
-                    notify(f"[{each['title']}]\t任务完成")
-            elif each['title'] == '浏览OPPO 11.11会场':
-                if each['t_status'] == 0:
-                    self.runViewTask(dic=each)
-                elif each['t_status'] == 1:
-                    self.receiveAward(each)
-                elif each['t_status'] == 2:
-                    notify(f"[{each['title']}]\t任务完成")
-            elif each['title'] == '浏览一加 11.11会场':
-                if each['t_status'] == 0:
-                    self.runViewTask(dic=each)
-                elif each['t_status'] == 1:
-                    self.receiveAward(each)
-                elif each['t_status'] == 2:
-                    notify(f"[{each['title']}]\t任务完成")
-            elif each['title'] == '浏览realme 11.11会场':
-                if each['t_status'] == 0:
-                    self.runViewTask(dic=each)
-                elif each['t_status'] == 1:
-                    self.receiveAward(each)
-                elif each['t_status'] == 2:
-                    notify(f"[{each['title']}]\t任务完成")
-            elif each['title'] == '浏览智能硬件 11.11会场':
-                if each['t_status'] == 0:
-                    self.runViewTask(dic=each)
-                elif each['t_status'] == 1:
-                    self.receiveAward(each)
-                elif each['t_status'] == 2:
-                    notify(f"[{each['title']}]\t任务完成")
-            elif each['title'] == '浏览潮流好物 11.11会场':
-                if each['t_status'] == 0:
-                    self.runViewTask(dic=each)
-                elif each['t_status'] == 1:
-                    self.receiveAward(each)
-                elif each['t_status'] == 2:
-                    notify(f"[{each['title']}]\t任务完成")
-            elif each['title'] == '浏览商品':
-                if each['t_status'] == 0:
-                    self.viewGoods(count=2,dic=each)
+                    self.viewGoods(flag=1,count=6,dic=each)
                 elif each['t_status'] == 1:
                     self.receiveAward(each)
                 elif each['t_status'] == 2:
@@ -304,7 +254,7 @@ class Double11:
             return f"{self.dic['user']}\t总积分:{response['data']['userCredits']}"
         else:
             return f"{self.dic['user']}\t错误原因:{response}"
-        
+
     # 执行欢太商城实例对象
     def start(self):
         self.sess.headers.update({
@@ -339,21 +289,21 @@ def main_handler(event, context):
     for each in lists:
         if all(each.values()):
             if checkHT(each):
-                double11 = Double11(each)
+                onePlusJYStation = OnePlusJYStation(each)
                 for count in range(3):
                     try:
                         time.sleep(random.randint(2,5))    # 随机延时
-                        double11.start()
+                        onePlusJYStation.start()
                         break
                     except requests.exceptions.ConnectionError:
-                        notify(f"{double11.dic['user']}\t请求失败，随机延迟后再次访问")
+                        notify(f"{onePlusJYStation.dic['user']}\t请求失败，随机延迟后再次访问")
                         time.sleep(random.randint(2,5))
                         continue
                 else:
-                    notify(f"账号: {double11.dic['user']}\n状态: 取消登录\n原因: 多次登录失败")
+                    notify(f"账号: {onePlusJYStation.dic['user']}\n状态: 取消登录\n原因: 多次登录失败")
                     break
     if not os.path.basename(__file__).split('_')[-1][:-3] in notifyBlackList:
-        send('全名抽免单',allMess)
+        send('一加加油站',allMess)
 
 if __name__ == '__main__':
     main_handler(None,None)
